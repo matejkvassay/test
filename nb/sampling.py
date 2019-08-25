@@ -32,6 +32,37 @@ class UnderSampler(K.utils.Sequence):
     def on_epoch_end(self):
         self._shuffle()
         
+
+class UnderSampler3D(K.utils.Sequence):
+
+    def __init__(self, X, y, batch_size):
+        self.rus=RandomUnderSampler(sampling_strategy='not minority')
+        self.X, self.y = X, y
+        self.X_shape=X.shape
+        self.X=X.reshape(X.shape[0], X.shape[1]*X.shape[2])
+        
+        self.batch_size = batch_size
+        #len
+        self._shuffle()
+        self.length= math.ceil(self.X_u.shape[0] / self.batch_size)
+
+    def _shuffle(self):
+        self.X_u, self.y_u=self.rus.fit_resample(self.X,self.y)
+        self.X_u,self.y_u = sklearn_shuffle(self.X_u,self.y_u)
+        
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, idx):
+        batch_x = self.X_u[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_y = self.y_u[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_x=batch_x.reshape(batch_x.shape[0],self.X_shape[1],self.X_shape[2])
+        
+        return batch_x, batch_y
+    
+    def on_epoch_end(self):
+        self._shuffle()
+        
 class RandomSampler(K.utils.Sequence):
 
     def __init__(self, X, y, batch_size):
