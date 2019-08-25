@@ -4,6 +4,7 @@ from IPython.core.display import HTML
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 from math import sqrt
+import numpy as np
 
 def plot_history(model,title):
     loss = model.history.history['loss']

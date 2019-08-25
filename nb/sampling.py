@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle as  sklearn_shuffle
 from imblearn.under_sampling import RandomUnderSampler
 import math
+import scipy
 
 class UnderSampler(K.utils.Sequence):
 
@@ -24,7 +25,9 @@ class UnderSampler(K.utils.Sequence):
     def __getitem__(self, idx):
         batch_x = self.X_u[idx * self.batch_size:(idx + 1) * self.batch_size]
         batch_y = self.y_u[idx * self.batch_size:(idx + 1) * self.batch_size]
-        return batch_x.todense(), batch_y
+        if scipy.sparse.issparse(batch_x):
+            batch_x=batch_x.todense()
+        return batch_x, batch_y
     
     def on_epoch_end(self):
         self._shuffle()
@@ -48,7 +51,9 @@ class RandomSampler(K.utils.Sequence):
     def __getitem__(self, idx):
         batch_x = self.X_u[idx * self.batch_size:(idx + 1) * self.batch_size]
         batch_y = self.y_u[idx * self.batch_size:(idx + 1) * self.batch_size]
-        return batch_x.todense(),batch_y
+        if scipy.sparse.issparse(batch_x):
+            batch_x=batch_x.todense()
+        return batch_x, batch_y
     
     def on_epoch_end(self):
         self._shuffle()
