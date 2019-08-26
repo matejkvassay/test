@@ -1,0 +1,7 @@
+model_name, RMSE, P-RMSE-MEAN, P-RMSE-MAX
+"ft-300-avg-seq-E3a", 0.984, 0.865, 0.117
+"ft-100-lem-avg-seq-E3b", 1.32, 0.977, 0.296
+"ft_100_cnn-mse-E4",0.766, 0.927, 0.212
+"ft_100_cnn-E5", 0.829, 0.846, 0.082
+"lem-tf-seq-E7", 0.629, 0.678, 0.049
+"ft_100-cnn-deep-E8", 0.763, 0.796, 0.101
